@@ -1,0 +1,64 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile information",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "onboardingComplete": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email"]
+    },
+    "MediaEntry": {
+      "title": "MediaEntry",
+      "description": "An entry in the user's personal content vault",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "uid": { "type": "string", "description": "Owner of the entry" },
+        "title": { "type": "string" },
+        "type": { "type": "string", "enum": ["anime", "web-series", "movie", "manga", "game", "tv-show"] },
+        "status": { "type": "string", "enum": ["watching", "completed", "dropped", "planned"] },
+        "rating": { "type": "number" },
+        "review": { "type": "string" },
+        "watchedAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "coverUrl": { "type": "string" },
+        "currentProgress": { "type": "string", "description": "e.g. Episode 12 or Vol 4" },
+        "notes": { "type": "string" }
+      },
+      "required": ["uid", "title", "type", "status"]
+    },
+    "Brainstorming": {
+      "title": "Brainstorming",
+      "description": "AI-generated or user-added deep dives into media characters and stories",
+      "type": "object",
+      "properties": {
+        "mediaId": { "type": "string" },
+        "uid": { "type": "string" },
+        "title": { "type": "string" },
+        "content": { "type": "string", "description": "Markdown content about characters/stories" },
+        "lastAnalyzed": { "type": "string", "format": "date-time" }
+      }
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "/vault/{entryId}": {
+      "schema": "MediaEntry",
+      "description": "The user's watch/read history"
+    },
+    "/brainstorming/{brainId}": {
+      "schema": "Brainstorming",
+      "description": "Personal media analysis and trivia"
+    }
+  }
+}
